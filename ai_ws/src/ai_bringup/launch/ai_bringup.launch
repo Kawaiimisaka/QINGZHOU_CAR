@@ -1,0 +1,20 @@
+<launch>
+
+
+    <node pkg="ai_bringup" type="ai_bringup" name="ai_bringup" output="screen" />
+         
+       <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_description)/xacro/robot_with_laser.xacro'" />
+
+
+
+
+  
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />  
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="state_publisher">
+        <param name="publish_frequency" type="double" value="50.0" />
+    </node>
+
+    <include file="$(find ai_bringup)/launch/lidar.launch" />
+
+</launch>

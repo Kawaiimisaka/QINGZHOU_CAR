@@ -1,0 +1,8 @@
+prefix=/home/ai/ai_ws/install
+
+Name: ai_bringup
+Description: Description of ai_bringup
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

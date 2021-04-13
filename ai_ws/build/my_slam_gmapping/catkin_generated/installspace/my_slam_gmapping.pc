@@ -1,0 +1,8 @@
+prefix=/home/ai/ai_ws/install
+
+Name: my_slam_gmapping
+Description: Description of my_slam_gmapping
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

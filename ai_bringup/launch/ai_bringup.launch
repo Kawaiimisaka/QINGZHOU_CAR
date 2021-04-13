@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+
+    <node pkg="ai_bringup" type="ai_bringup" name="ai_bringup" output="screen" />
+
+  
+
+    <include file="$(find ai_bringup)/launch/lidar.launch" />
+
+</launch>

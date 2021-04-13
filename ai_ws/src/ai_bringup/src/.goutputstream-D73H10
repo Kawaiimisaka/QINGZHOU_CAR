@@ -1,0 +1,56 @@
+#include <ai_bringup/ai_linux_serial.h>
+
+using namespace std;
+using namespace boost::asio;
+//串口相关对象
+boost::asio::io_service iosev;
+boost::asio::serial_port sp(iosev, "/dev/ttyUSB0");
+boost::system::error_code err;
+
+unsigned char header[2] = {0xA5,0x5a};
+
+union sendData
+{
+	int d;
+	unsigned char data[4];
+}encoderLeft,encoderRight;
+
+
+void serialInit()
+{
+	sp.set_option(serial_port::baud_rate(115200));
+    sp.set_option(serial_port::flow_control(serial_port::flow_control::none));
+    sp.set_option(serial_port::parity(serial_port::parity::none));
+    sp.set_option(serial_port::stop_bits(serial_port::stop_bits::one));
+    sp.set_option(serial_port::character_size(8));    
+	
+}
+
+
+bool readSpeed(double &vx,double &vth,double &delta_Distance,double &delta_th)
+{
+	unsigned char buf[60] = {0};
+	sp.read_some(buffer(buf, 60));
+	
+
+    
+	 for(int i = 0; i < 4; i++)
+    {
+        encoderLeft.data[i]  =  buf[i + 3];       //buf[3] -buf[6]
+        encoderRight.data[i] =  buf[i + 7];     //buf[7]- buf[10]
+       
+    }
+    
+    //计算得到线速度、角速度
+    encoderRight.d = -encoderRight.d;
+    double delta_Encode = (encoderLeft.d + encoderRight.d)/2;
+    delta_Distance = delta_Encode/2363;             
+    delta_th = (encoderRight.d - encoderLeft.d)*2*3.1415926/4477;
+    
+    vx = delta_Distance/0.026;              //m/s
+    vth = delta_th/0.026;                   //rad/s
+    
+    
+    ROS_INFO("vx:%f\n",delta_Encode);
+    ROS_INFO("vth:%f\n",vth);
+}

@@ -1,0 +1,2 @@
+ai_bringup:mbot_teleop:my_slam_gmapping:robot_description:ydlidar_ros
+-DCATKIN_DEVEL_PREFIX=/home/ai/ai_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ai/ai_ws/install -G Unix Makefiles
